@@ -9,11 +9,11 @@
             [clojure.java.jdbc :as jdbc]))
 
 (defn convert-timestamp [bookmark]
-  (->> 
-    bookmark 
+  (->>
+    bookmark
     (map byte ,,,)
     byte-array
-    (map (partial format "%02x")) 
+    (map (partial format "%02x"))
     (apply (partial str "0x"))
     read-string
   )
@@ -22,6 +22,7 @@
 (defn process-rep-key [rep-key]
   (if (vector? rep-key) (convert-timestamp rep-key) rep-key)
 )
+
 
 (defn build-incremental-sync-query
   [stream-name schema-name table-name record-keys replication-key state]
@@ -71,7 +72,7 @@
             (jdbc/reducible-query (assoc (config/->conn-map config)
                                          :dbname dbname)
                                   sql-params
-                                  common/result-set-opts))))
+                                  {:raw? true}))))
 
 (defn sync!
   [config catalog stream-name state]
