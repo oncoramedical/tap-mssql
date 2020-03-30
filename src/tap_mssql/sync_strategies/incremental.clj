@@ -8,7 +8,6 @@
             [clojure.string :as string]
             [clojure.java.jdbc :as jdbc]))
 
-;; Oncora stuff
 (defn convert-timestamp [bookmark]
   (->> 
     bookmark 
@@ -23,7 +22,6 @@
 (defn process-rep-key [rep-key]
   (if (vector? rep-key) (convert-timestamp rep-key) rep-key)
 )
-
 
 (defn build-incremental-sync-query
   [stream-name schema-name table-name record-keys replication-key state]
