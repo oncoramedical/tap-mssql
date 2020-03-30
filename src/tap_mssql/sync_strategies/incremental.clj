@@ -8,11 +8,28 @@
             [clojure.string :as string]
             [clojure.java.jdbc :as jdbc]))
 
+;; Oncora stuff
+(defn convert-timestamp [bookmark]
+  (->> 
+    bookmark 
+    (map byte ,,,)
+    byte-array
+    (map (partial format "%02x")) 
+    (apply (partial str "0x"))
+    read-string
+  )
+)
+
+(defn process-rep-key [rep-key]
+  (if (vector? rep-key) (convert-timestamp rep-key) rep-key)
+)
+
+
 (defn build-incremental-sync-query
   [stream-name schema-name table-name record-keys replication-key state]
   {:pre [(not (empty? record-keys))]} ;; Is there more incoming state that we think is worth asserting?
   (let [replication-key-name (get-in state ["bookmarks" stream-name "replication_key_name"])
-        replication-key-value (get-in state ["bookmarks" stream-name "replication_key_value"])
+        replication-key-value (process-rep-key (get-in state ["bookmarks" stream-name "replication_key_value"]))
         bookmarking-clause    (format "%s >= ?" replication-key)
         add-where-clause?     (and (some? replication-key-value)
                                    (= replication-key replication-key-name)) ;; if the replication-key in metadata changes, we negate our bookmark
