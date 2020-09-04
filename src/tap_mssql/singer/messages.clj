@@ -39,7 +39,7 @@
 
   ;; Get the correct offset for the provided LocalDateTime for the timezone provided
   ;; in an env var, defaulting to UTC if not provided
-  (def tzOffset (-> (java.time.ZoneId/of (or (System/getenv "TARGET_TIMEZONE") "Z"))
+  (def tzOffset (-> (java.time.ZoneId/of (or (System/getenv "DEFAULT_TIMEZONE") "Z"))
                     (.getRules)
                     (.getOffset dt)
    ))
