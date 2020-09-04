@@ -27,6 +27,28 @@
             (.appendPattern "yyyy-MM-dd'T'HH:mm:ss.SSSSSSX")
             (.toFormatter)))
 
+(def format-dt-without-tz (-> (java.time.format.DateTimeFormatterBuilder.)
+            (.appendPattern "yyyy-MM-dd'T'HH:mm:ssX")
+            (.toFormatter)))
+
+(defn- parse-timestamp-without-tz [ts]
+
+  (def dt (-> ts
+              (.toLocalDateTime)
+  ))
+
+  ;; Get the correct offset for the provided LocalDateTime for the timezone provided
+  ;; in an env var, defaulting to UTC if not provided
+  (def tzOffset (-> (java.time.ZoneId/of (or (System/getenv "TARGET_TIMEZONE") "Z"))
+                    (.getRules)
+                    (.getOffset dt)
+   ))
+
+  (-> dt
+      (.atOffset tzOffset)
+      (.format format-dt-without-tz)
+      ))
+
 (defn- parse-timestamp-to-string [ts]
   (-> ts
       (.toLocalDateTime)
@@ -51,7 +73,7 @@
 (defn serialize-datetimes [k v]
   (condp contains? (type v)
     #{java.sql.Timestamp} ;; Java type for datetime, datetime2, and smalldatetime column types
-    (parse-timestamp-to-string v)
+    (parse-timestamp-without-tz v)
 
     #{microsoft.sql.DateTimeOffset} ;; Java type for datetimeoffset columns
     (-> v
