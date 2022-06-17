@@ -13,7 +13,7 @@
   ([config]
    (->conn-map* config false))
   ([config is-readonly?]
-   (let [conn-map (cond-> (assoc {:dbtype "sqlserver"
+   (let [conn-map (cond-> (merge {:dbtype "sqlserver"
                            :dbname (or (config "database") "") ;; database is optional - if omitted it is set to an empty string
                            :host (config "host")
                            :port (or (config "port") 0) ;; port is optional - if omitted it is set to 0 for a dynamic port
