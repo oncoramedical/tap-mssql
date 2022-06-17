@@ -13,12 +13,13 @@
   ([config]
    (->conn-map* config false))
   ([config is-readonly?]
-   (let [conn-map (cond-> {:dbtype "sqlserver"
+   (let [conn-map (cond-> (assoc {:dbtype "sqlserver"
                            :dbname (or (config "database") "") ;; database is optional - if omitted it is set to an empty string
                            :host (config "host")
                            :port (or (config "port") 0) ;; port is optional - if omitted it is set to 0 for a dynamic port
                            :password (config "password")
                            :user (config "user")}
+                           (or (config "additional_params") {}))
 
                     (= "true" (config "ssl"))
                     ;; TODO: The only way I can get a test failure is by
@@ -40,7 +41,8 @@
                      ;;
                      ;; [1]: https://docs.microsoft.com/en-us/sql/connect/jdbc/setting-the-connection-properties?view=sql-server-2017
                      :authentication "SqlPassword"
-                     :trustServerCertificate false))]
+                     :trustServerCertificate false)
+                     )]
      ;; returns conn-map and logs on successful connection
      (if is-readonly?
        (try-read-only [test-conn conn-map]
