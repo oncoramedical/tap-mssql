@@ -1,5 +1,35 @@
 # Changelog
 
+## 1.6.10
+  * Update `nrepl` server binding from `0.0.0.0` to `127.0.0.1` [#62](https://github.com/stitchdata/tap-mssql/pull/62)
+
+## 1.6.9
+  * Quote the `ORDER BY` columns in incremental queries [#59](https://github.com/singer-io/tap-mssql/pull/59)
+
+## 1.6.8
+  * Attempt readonly connections on `jdbc/reducible-query` and `jdbc/query` calls in Full Table and Incremental Syncs [#58](https://github.com/singer-io/tap-mssql/pull/58)
+
+## 1.6.7
+  * Apply approaches from 1.6.5 and 1.6.6 to only try `ApplicationIntent=ReadOnly` for query-based connections, and fall-back to not read only if the check fails. [#55](https://github.com/singer-io/tap-mssql/pull/55)
+
+## 1.6.6
+  * Handle cases where `ApplicationIntent=ReadOnly` is not doable for log-based sync's initial full table [#53](https://github.com/singer-io/tap-mssql/pull/53)
+
+## 1.6.5
+  * Only adds `ApplicationIntent=ReadOnly` to query-based connections due to an issue with Change Tracking and secondary read replicas not supporting it [#52](https://github.com/singer-io/tap-mssql/pull/52)
+
+## 1.6.4
+  * Adds `ApplicationIntent=ReadOnly` to the connection string [#50](https://github.com/singer-io/tap-mssql/pull/50)
+
+## 1.6.3
+  * Properly check whether change tracking is enabled on a DB in Azure [#41](https://github.com/singer-io/tap-mssql/pull/41)
+
+## 1.6.2
+  * Warn on permissions errors when discovering schemas if the user doesn't have access [#33](https://github.com/singer-io/tap-mssql/pull/33)
+
+## 1.6.1
+  * Fix bugs with Views being interrupted during a full table sync [#28](https://github.com/singer-io/tap-mssql/pull/28)
+
 ## 1.6.0
   * Configure ResultSet options for concurrency mode and cursor type [#25](https://github.com/singer-io/tap-mssql/pull/25)
 
