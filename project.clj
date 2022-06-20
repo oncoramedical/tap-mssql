@@ -9,8 +9,8 @@
                  [org.clojure/data.json "0.2.6"]
 
                  ;; jdbc
-                 [org.clojure/java.jdbc "0.7.9"]
-                 [com.microsoft.sqlserver/mssql-jdbc "7.2.1.jre8"]
+                 [org.clojure/java.jdbc "0.7.12"]
+                 [com.microsoft.sqlserver/mssql-jdbc "10.2.1.jre8"]
 
                  ;; logging
                  [org.clojure/tools.logging "0.3.1"]
